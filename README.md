@@ -29,19 +29,19 @@ Whether you're a procedural thinker who needs line-by-line breakdowns, a top-dow
 
 1. **Step-by-Step** 👣  
    *Line-by-line procedural walkthroughs.* Perfect for sequentially minded developers who want to understand flow control and exact mechanizations.  
-   <br/>*(Insert an image showing Step-by-Step explanation here: `![Step-by-Step Demo](images/demo-step.png)`)*
+   ![Step-by-Step Explanation](images/step-by-step.png)
 
 2. **Big Picture First** 🔭  
    *Starts with a high-level executive summary, then zooms in.* Best for systems thinkers who need to understand the architecture and "why" before diving into the "how."  
-   <br/>*(Insert an image showing Big Picture explanation here: `![Big Picture Demo](images/demo-big-picture.png)`)*
+   ![Big Picture First Explanation](images/big-picture-first.png)
 
 3. **Analogy-Based** 🌠  
    *Explains complex concepts using vivid real-world metaphors.* Excellent for conceptual and visual learners who benefit from translating code into familiar mental models.  
-   <br/>*(Insert an image showing Analogy explanation here: `![Analogy Demo](images/demo-analogy.png)`)*
+   ![Analogy-Based Explanation](images/analogy-based.png)
 
 4. **Minimal** ⚡  
    *Terse, hyper-condensed facts.* Built for senior engineers who just want the critical facts, immediate edge cases, and performance implications with absolutely no fluff.  
-   <br/>*(Insert an image showing Minimal explanation here: `![Minimal Demo](images/demo-minimal.png)`)*
+   ![Minimal Explanation](images/minimal.png)
 
 ---
 
