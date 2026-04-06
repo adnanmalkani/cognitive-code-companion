@@ -18,7 +18,7 @@ Whether you're a procedural thinker who needs line-by-line breakdowns, a top-dow
 ## ✨ Features
 
 - **Personalized Explainers:** Choose from four distinct cognitive frameworks.
-- **Top-Tier LLM Access:** Powered by the OpenRouter API, granting access to cutting-edge models like GPT-4o, Claude 3.5 Sonnet, Llama 3, and more.
+- **Top-Tier LLM Access:** Powered by the OpenRouter API, granting access to cutting-edge models like GPT-5.2, Claude 4.6 Sonnet, Llama 4, Gemini 3.1 Pro, and more.
 - **Embedded IDE Experience:** Seamlessly highlight any code snippet, right-click, and select "Explain This Code."
 - **Multi-lingual Support:** Need explanations in Spanish, Dutch, or Japanese? Simply configure your preferred language in the settings.
 - **Markdown Rich Responses:** Explanations are highly structured, deeply analytical, and beautifully formatted in markdown.
