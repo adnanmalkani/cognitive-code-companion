@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'none'; style-src 'unsafe-inline'; script-src 'nonce-{{nonce}}';" />
+  <title>Cognitive Code Companion</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--vscode-font-family);
+      font-size: var(--vscode-font-size);
+      color: var(--vscode-foreground);
+      background: var(--vscode-sideBar-background, var(--vscode-editor-background));
+      padding: 16px;
+      line-height: 1.5;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+
+    .header label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--vscode-descriptionForeground);
+      font-weight: 600;
+    }
+
+    select {
+      background: var(--vscode-dropdown-background);
+      color: var(--vscode-dropdown-foreground);
+      border: 1px solid var(--vscode-dropdown-border);
+      border-radius: 2px;
+      padding: 4px 8px;
+      font-size: var(--vscode-font-size);
+      font-family: var(--vscode-font-family);
+      cursor: pointer;
+      outline: none;
+    }
+
+    select:focus {
+      border-color: var(--vscode-focusBorder);
+    }
+
+    .mode-badge {
+      display: inline-block;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      background: var(--vscode-badge-background);
+      color: var(--vscode-badge-foreground);
+      font-weight: 600;
+    }
+
+    .empty-state {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 48px 16px;
+      color: var(--vscode-descriptionForeground);
+    }
+
+    .empty-state .icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+      opacity: 0.4;
+    }
+
+    .empty-state p {
+      margin-bottom: 8px;
+    }
+
+    .empty-state .hint {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 16px;
+      color: var(--vscode-descriptionForeground);
+    }
+
+    .spinner {
+      width: 24px;
+      height: 24px;
+      border: 3px solid var(--vscode-progressBar-background, #007acc);
+      border-top-color: transparent;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-bottom: 12px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .explanation {
+      line-height: 1.6;
+    }
+
+    .explanation h1,
+    .explanation h2,
+    .explanation h3 {
+      margin-top: 16px;
+      margin-bottom: 8px;
+      color: var(--vscode-foreground);
+    }
+
+    .explanation h1 { font-size: 1.3em; }
+    .explanation h2 { font-size: 1.15em; }
+    .explanation h3 { font-size: 1.05em; }
+
+    .explanation p {
+      margin-bottom: 10px;
+    }
+
+    .explanation ul,
+    .explanation ol {
+      margin-bottom: 10px;
+      padding-left: 24px;
+    }
+
+    .explanation li {
+      margin-bottom: 4px;
+    }
+
+    .explanation strong {
+      color: var(--vscode-foreground);
+    }
+
+    .explanation code {
+      font-family: var(--vscode-editor-font-family, 'Consolas, monospace');
+      font-size: 0.9em;
+      background: var(--vscode-textCodeBlock-background);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    .explanation pre {
+      background: var(--vscode-textCodeBlock-background);
+      padding: 12px;
+      border-radius: 4px;
+      overflow-x: auto;
+      margin-bottom: 12px;
+    }
+
+    .explanation pre code {
+      background: none;
+      padding: 0;
+      font-size: 0.88em;
+      line-height: 1.5;
+    }
+
+    .error {
+      background: var(--vscode-inputValidation-errorBackground, rgba(255, 0, 0, 0.1));
+      border: 1px solid var(--vscode-inputValidation-errorBorder, #f44);
+      border-radius: 4px;
+      padding: 12px;
+      color: var(--vscode-errorForeground, var(--vscode-foreground));
+    }
+
+    .error strong {
+      display: block;
+      margin-bottom: 4px;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <label for="mode-select">Cognitive Mode:</label>
+    <select id="mode-select">
+      <option value="step-by-step">Step-by-Step</option>
+      <option value="big-picture-first">Big Picture First</option>
+      <option value="analogy-based">Analogy-Based</option>
+      <option value="minimal">Minimal</option>
+    </select>
+  </div>
+
+  <div id="content">
+    <div class="empty-state">
+      <div class="icon">&#128161;</div>
+      <p>No explanation yet.</p>
+      <p class="hint">Select code in the editor, then right-click and choose<br/><strong>"Explain This Code"</strong> or use the Command Palette.</p>
+    </div>
+  </div>
+
+  <script nonce="{{nonce}}">
+    const vscode = acquireVsCodeApi();
+    const contentEl = document.getElementById('content');
+    const modeSelect = document.getElementById('mode-select');
+
+    modeSelect.addEventListener('change', () => {
+      vscode.postMessage({ type: 'modeChange', mode: modeSelect.value });
+    });
+
+    window.addEventListener('message', (event) => {
+      const message = event.data;
+
+      switch (message.type) {
+        case 'loading':
+          contentEl.innerHTML =
+            '<div class="loading"><div class="spinner"></div><p>Thinking...</p></div>';
+          break;
+
+        case 'explanation':
+          contentEl.innerHTML =
+            '<div class="explanation">' + message.html + '</div>';
+          break;
+
+        case 'error':
+          contentEl.innerHTML =
+            '<div class="error"><strong>Error</strong>' + escapeHtml(message.message) + '</div>';
+          break;
+
+        case 'setMode':
+          modeSelect.value = message.mode;
+          break;
+      }
+    });
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+  </script>
+</body>
+</html>

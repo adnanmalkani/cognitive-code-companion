@@ -1,0 +1,19 @@
+out/
+dist/
+node_modules/
+.vscode-test/
+*.vsix
+
+# VS Code workspace settings (contains API key)
+.vscode/settings.json
+
+# Claude Code local state
+.claude/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Environment / secrets
+.env
+.env.*

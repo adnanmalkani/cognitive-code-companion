@@ -1,0 +1,127 @@
+{
+  "name": "cognitive-code-companion",
+  "displayName": "Cognitive Code Companion",
+  "description": "AI-powered code explanations adapted to your cognitive style. Choose step-by-step, big-picture, analogy-based, or minimal explanations.",
+  "version": "0.1.0",
+  "publisher": "adnanmalkani",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/adnanmalkani/cognitive-code-companion"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Education",
+    "Programming Languages",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "code explanation",
+    "cognitive styles",
+    "accessibility",
+    "openrouter"
+  ],
+  "icon": "images/icon.png",
+  "activationEvents": ["*"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "cognitive-code-companion",
+          "title": "Cognitive Code Companion",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "cognitive-code-companion": [
+        {
+          "type": "webview",
+          "id": "cognitiveCodCompanion.explanationView",
+          "name": "Explanation",
+          "icon": "images/icon.svg"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "cognitiveCodCompanion.explainCode",
+        "title": "Explain This Code",
+        "category": "Cognitive Code Companion",
+        "icon": "$(lightbulb)"
+      }
+    ],
+    "menus": {
+      "editor/context": [
+        {
+          "command": "cognitiveCodCompanion.explainCode",
+          "group": "navigation"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Cognitive Code Companion",
+      "properties": {
+        "cognitiveCodCompanion.apiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Your OpenRouter API key.",
+          "order": 1
+        },
+        "cognitiveCodCompanion.model": {
+          "type": "string",
+          "default": "nvidia/nemotron-3-super-120b-a12b:free",
+          "description": "OpenRouter model to use (e.g., 'nvidia/nemotron-3-super-120b-a12b:free', 'openai/gpt-4o', 'google/gemini-2.0-flash-001', 'anthropic/claude-sonnet-4-20250514', 'meta-llama/llama-4-maverick').",
+          "order": 2
+        },
+        "cognitiveCodCompanion.explanationStyle": {
+          "type": "string",
+          "enum": [
+            "step-by-step",
+            "big-picture-first",
+            "analogy-based",
+            "minimal"
+          ],
+          "default": "step-by-step",
+          "description": "How code explanations are structured — choose the style that matches how you think.",
+          "enumDescriptions": [
+            "Line-by-line procedural walkthrough. Good for sequential thinkers.",
+            "Starts with what the code achieves overall, then zooms into details. Good for top-down thinkers.",
+            "Explains using real-world analogies and metaphors. Good for conceptual/visual thinkers.",
+            "Terse, no hand-holding, just the essential logic. For experienced devs who want quick clarity."
+          ],
+          "order": 3
+        },
+        "cognitiveCodCompanion.language": {
+          "type": "string",
+          "default": "English",
+          "description": "Language for code explanations (e.g., English, Spanish, Dutch).",
+          "order": 4
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "pnpm run compile",
+    "compile": "tsc -p ./ && pnpm run copy-html",
+    "copy-html": "mkdir -p out/webview && cp src/webview/webview.html out/webview/webview.html",
+    "watch": "tsc -watch -p ./",
+    "pretest": "pnpm run compile && pnpm run lint",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.56.1",
+    "eslint": "^9.39.3",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  }
+}
