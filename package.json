@@ -2,7 +2,7 @@
   "name": "cognitive-code-companion",
   "displayName": "Cognitive Code Companion",
   "description": "AI-powered code explanations adapted to your cognitive style. Choose step-by-step, big-picture, analogy-based, or minimal explanations.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "adnanmalkani",
   "license": "MIT",
   "repository": {
